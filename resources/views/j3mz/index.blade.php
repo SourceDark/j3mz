@@ -16,6 +16,7 @@
     <script src="/js/j3mz/services/macroService.js"></script>
     <script src="/js/j3mz/services/skillService.js"></script>
     <script src="/js/j3mz/services/buffService.js"></script>
+    <script src="/js/j3mz/services/loggerService.js"></script>
     <script src="/js/j3mz/index.js"></script>
 @endsection
 
@@ -55,5 +56,93 @@
             <div>模拟次数：<input ng-model="worldAmount">（总共模拟的战斗次数，越高平均输出越准确）</div>
         </div>
         <button ng-click="test()">测试</button>
+        <div>平均输出为：<%(dpsSum / worldAmount / worldLength).toFixed(0)%></div>
+        <div class="result-panel">
+            <div class="battle-list">
+                <div class="item" ng-repeat="result in results" ng-click="selectResult(result)">第<%$index%>场：<%result.dps.toFixed(2)%></div>
+            </div>
+            <div class="battle-detail">
+                <div class="event-list">
+                    <div ng-repeat="event in selectedResult.events">
+                        <div ng-if="event.type == 0">
+                            <div ng-if="event.hitType == 0">[<%event.time.toFixed(2)%>]你的[<%event.skillName%>]偏离了。</div>
+                            <div ng-if="event.hitType == 1">[<%event.time.toFixed(2)%>]你的[<%event.skillName%>]对<%event.targetName%>造成了<%event.damage.toFixed(0)%>点伤害。</div>
+                            <div ng-if="event.hitType == 2">[<%event.time.toFixed(2)%>]你的[<%event.skillName%>]（会心）对<%event.targetName%>造成了<%event.damage.toFixed(0)%>点伤害。</div>
+                            <div ng-if="event.hitType == 3">[<%event.time.toFixed(2)%>]你的[<%event.skillName%>]的<%event.damage.toFixed(0)%>点伤害被<%event.targetName%>识破了。</div>
+                        </div>
+                        <div ng-if="event.type == 1">
+                            <div>[<%event.time.toFixed(2)%>]减益效果[<%event.debuffName%>：<%event.debuffLevel%>]从[<%event.targetName%>]身上消失了。</div>
+                        </div>
+                        <div ng-if="event.type == 2">
+                            <div>[<%event.time.toFixed(2)%>][<%event.targetName%>]获得了减益效果[<%event.debuffName%>：<%event.debuffLevel%>]。</div>
+                        </div>
+                        <div ng-if="event.type == 3">
+                            <div ng-if="event.hitType == 1">[<%event.time.toFixed(2)%>]你的[<%event.debuffName%>：<%event.debuffLevel%>]对<%event.targetName%>造成了<%event.damage.toFixed(0)%>点伤害。</div>
+                            <div ng-if="event.hitType == 2">[<%event.time.toFixed(2)%>]你的[<%event.debuffName%>：<%event.debuffLevel%>]（会心）对<%event.targetName%>造成了<%event.damage.toFixed(0)%>点伤害。</div>
+                            <div ng-if="event.hitType == 3">[<%event.time.toFixed(2)%>]你的[<%event.debuffName%>：<%event.debuffLevel%>]的<%event.damage.toFixed(0)%>点伤害被<%event.targetName%>识破了。</div>
+                        </div>
+                        <div ng-if="event.type == 4">
+                            <div>[<%event.time.toFixed(2)%>]你获得了效果[<%event.buffName%>：<%event.buffLevel%>]。</div>
+                        </div>
+                        <div ng-if="event.type == 5">
+                            <div>[<%event.time.toFixed(2)%>]你开始运功[<%event.skillName%>]。</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="skill-stats">
+                    <div class="skill-list">
+                        <table style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <td>#</td>
+                                    <td></td>
+                                    <td>次数</td>
+                                    <td>伤害</td>
+                                    <td>比重</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="skill in selectedResult.skills" ng-click="selectSkill(skill)">
+                                    <td><%$index%></td>
+                                    <td><%skill.name%></td>
+                                    <td><%skill.stats[0].count + skill.stats[1].count + skill.stats[2].count + skill.stats[3].count%></td>
+                                    <td><%(skill.stats[0].sum + skill.stats[1].sum + skill.stats[2].sum + skill.stats[3].sum).toFixed(0)%></td>
+                                    <td><%((skill.stats[0].sum + skill.stats[1].sum + skill.stats[2].sum + skill.stats[3].sum) / selectedResult.dps / worldLength * 100).toFixed(1)%>%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="skill-detail">
+                        <table style="width: 100%">
+                            <thead>
+                            <tr>
+                                <td>#</td>
+                                <td>技能类型</td>
+                                <td>最小</td>
+                                <td>平均</td>
+                                <td>最大</td>
+                                <td>次数</td>
+                                <td>比重</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="stat in selectedSkill.stats" ng-if="stat.count > 0">
+                                <td><%$index%></td>
+                                <td ng-if="$index==0">偏离</td>
+                                <td ng-if="$index==1">命中</td>
+                                <td ng-if="$index==2">会心</td>
+                                <td ng-if="$index==3">识破</td>
+                                <td><%(stat.min).toFixed(0)%></td>
+                                <td><%(stat.sum / stat.count).toFixed(0)%></td>
+                                <td><%(stat.max).toFixed(0)%></td>
+                                <td><%stat.count%></td>
+                                <td><%(stat.count / (selectedSkill.stats[0].count + selectedSkill.stats[1].count + selectedSkill.stats[2].count + selectedSkill.stats[3].count) * 100).toFixed(0)%>%</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

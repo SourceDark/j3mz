@@ -1,0 +1,43 @@
+.result-panel {
+  border: 1px solid;
+  position: relative;
+  width: 800px;
+  height: 500px;
+  .battle-list {
+    position: absolute;
+    width: 200px;
+    height: 500px;
+    border-right: 1px solid;
+    overflow-y: scroll;
+    .item {
+      cursor: pointer;
+    }
+  }
+  .battle-detail {
+    position: absolute;
+    left: 200px;
+    width: 600px;
+    top: 0px;
+    height: 500px;
+    .event-list {
+      height: 200px;
+      overflow-y: scroll;
+      border-bottom: 1px solid;
+    }
+    .skill-stats {
+      position: relative;
+      .skill-list {
+        width: 300px;
+        height: 300px;
+        position: absolute;
+        border-right: 1px solid;
+      }
+      .skill-detail {
+        left: 300px;
+        width: 300px;
+        height: 300px;
+        position: absolute;
+      }
+    }
+  }
+}

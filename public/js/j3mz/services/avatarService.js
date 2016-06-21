@@ -1,109 +1,178 @@
-j3mzApp.factory('avatarService', ['macroService', 'skillService', function(macroService, skillService) {
-    return {
-        createPlayer: function(xinfa, attributes) {
-            var avatar = {
-                xinfa: xinfa,
-                attributes: {
-                    weaponDamage_lowerLimit: attributes.weaponDamage_lowerLimit + attributes.weaponDamage_extra,
-                    weaponDamage_upperLimit: attributes.weaponDamage_upperLimit + attributes.weaponDamage_extra,
-                    basicAttackPower: attributes.basicAttackPower,
-                    finalAttackPower: attributes.finalAttackPower,
-                    criticalHitChance: attributes.criticalHitChance / 100.0,
-                    criticalHitDamage: attributes.criticalHitDamage / 100.0,
-                    defenseBreakLevel: attributes.defenseBreakLevel,
-                    hitChance: attributes.hitChance / 100.0,
-                    precisionChance: attributes.precisionChance / 100.0
-                },
-                buffs: [],
-                getBuffByName: function(buffName) {
-                    for (var key in this.buffs) {
-                        var buff = this.buffs[key];
-                        if (buff.name == buffName) {
-                            return buff;
+j3mzApp.factory('avatarService', ['macroService', 'skillService', 'constService', 'buffService', 'loggerService',
+    function(macroService, skillService, constService, buffService, logger) {
+        return {
+            createPlayer: function(xinfa, attributes) {
+                return {
+                    reset: function() {
+                        this.buffs = [];
+                        this.gcd = [0];
+                        this.xinfa.reset();
+                    },
+                    xinfa: xinfa,
+                    attributes: {
+                        weaponDamage_lowerLimit: attributes.weaponDamage_lowerLimit + attributes.weaponDamage_extra,
+                        weaponDamage_upperLimit: attributes.weaponDamage_upperLimit + attributes.weaponDamage_extra,
+                        basicAttackPower: attributes.basicAttackPower,
+                        finalAttackPower: attributes.finalAttackPower,
+                        criticalHitChance: attributes.criticalHitChance / 100.0,
+                        criticalHitDamage: attributes.criticalHitDamage / 100.0,
+                        defenseBreakLevel: attributes.defenseBreakLevel,
+                        hitChance: attributes.hitChance / 100.0,
+                        precisionChance: attributes.precisionChance / 100.0,
+                        qidian: 10
+                    },
+                    buffs: [],
+                    getBuffByName: function(buffName) {
+                        for (var key in this.buffs) {
+                            var buff = this.buffs[key];
+                            if (buff.name == buffName) {
+                                return buff;
+                            }
                         }
+                        return null;
+                    },
+                    getExtraAttributes: function() {
+                        var ret = {
+                            criticalHitChance: 0,
+                            criticalHitDamage: 0,
+                            defenseBreakMultiply: 0,
+                            basicAttckPowerMultiply: 0,
+                        }
+                        for (var key in this.buffs) {
+                            var buff = this.buffs[key];
+                            if (buff.effects.criticalHitChance != null) {
+                                ret.criticalHitChance += buff.effects.criticalHitChance * buff.level;
+                            }
+                            if (buff.effects.criticalHitDamage != null) {
+                                ret.criticalHitDamage += buff.effects.criticalHitDamage * buff.level;
+                            }
+                            if (buff.effects.defenseBreakMultiply != null) {
+                                ret.defenseBreakMultiply += buff.effects.defenseBreakMultiply * buff.level;
+                            }
+                            if (buff.effects.basicAttckPowerMultiply != null) {
+                                ret.basicAttckPowerMultiply += buff.effects.basicAttckPowerMultiply * buff.level;
+                            }
+                        }
+                        return ret;
+                    },
+                    gcd: [0],
+                    isCasting: false,
+                    castingCountDown: 0,
+                    castingSkill: null,
+                    castSkill: function(target, skill) {
+                        // Is player casting?
+                        if (this.isCasting) return;
+
+                        // Is gcd & cd ok?
+                        if (skill.gcdLevel != null && this.gcd[skill.gcdLevel] > 0) return;
+                        if (skill.cdRest > 0) return;
+
+                        // Cast skill
+                        if (skill.type == skillService.SkillType.Casting) {
+                            this.isCasting = true;
+                            this.castingSkill = skill;
+                            this.castingCountDown = skill.getCastingDuration();
+                            logger.logStartCasting(skill);
+                        }
+                        else {
+                            this.useSkill(target, skill);
+                        }
+
+                        // Trigger GCD
+                        if (skill.gcdLevel != null) {
+                            this.gcd[skill.gcdLevel] = constService.calcGCD(this);
+                        }
+                    },
+                    useSkill: function(target, skill) {
+                        if (skill.targetType == skillService.SkillTargetType.Enemy) {
+                            // Determine hit type
+                            var hitType = skillService.calculateSkillHitType(skill, this, target);
+                            // Calculate damage
+                            var damage = skillService.calculateSkillDamage(skill, this, target, hitType);
+                            // Log
+                            logger.logDamage(skill, this, target, hitType, damage);
+                            // After effect
+                            skill.after(this, target, hitType);
+                        }
+                        else {
+                            if (skill.after) {
+                                skill.after(this, target, hitType);
+                            }
+                        }
+                        // Trigger CD
+                        skill.cdRest = skill.getColdTime();
+                    },
+                    addBuff: function(buffName, levels) {
+                        var buff = this.getBuffByName(buffName);
+                        if (buff == null) {
+                            buff = buffService.getBuffByName(buffName);
+                            this.buffs.push(buff);
+                            buff.level = 0;
+                        }
+                        buff.duration = buff.duration_max;
+                        buff.level = Math.min(buff.level + levels, buff.level_max);
+                        logger.logAddPlayerBuff(buff);
+                    },
+                    removeBuff: function(buffName) {
+                        var buffList = [];
+                        for (var key in this.buffs) {
+                            var buff = this.buffs[key];
+                            if (buff.name != buffName) {
+                                buffList.push(buff);
+                            }
+                        }
+                        this.buffs = buffList;
                     }
-                    return null;
-                },
-                getExtraAttributes: function() {
-                    var ret = {
-                        criticalHitChance: 0,
-                        criticalHitDamage: 0,
-                        defenseBreakMultiply: 0,
-                        basicAttckPowerMultiply: 0,
+                };
+            },
+            createTarget: function(target) {
+                return {
+                    reset: function() {
+                        this.debuffs = [];
+                    },
+                    name: target.name,
+                    attributes: {
+                        hp: 5000000,
+                        hp_max: 5000000,
+                        hitChance_require: target.attributes.hitChance_require,
+                        precisionChance_require: target.attributes.precisionChance_require,
+                        defenseRate: target.attributes.defenseRate
+                    },
+                    debuffs: [],
+                    getDebuffByName: function(debuffName) {
+                        for (var key in this.debuffs) {
+                            var debuff = this.debuffs[key];
+                            if (debuff.name == debuffName) {
+                                return debuff;
+                            }
+                        }
+                        return null;
+                    },
+                    addDebuff: function(debuffName, levels, player) {
+                        var debuff = this.getDebuffByName(debuffName);
+                        if (debuff == null) {
+                            debuff = buffService.getDebuffByName(debuffName);
+                            this.debuffs.push(debuff);
+                            debuff.level = 0;
+                            if (debuff.tick_duration_max != null) {
+                                debuff.tick_duration = debuff.tick_duration_max;
+                            }
+                        }
+                        debuff.duration = debuff.duration_max;
+                        debuff.level = Math.min(debuff.level + levels, debuff.level_max);
+                        if (player != null) {
+                            debuff.attributes = {
+                                finalAttackPower: player.attributes.finalAttackPower + player.attributes.basicAttackPower * player.getExtraAttributes().basicAttckPowerMultiply,
+                                criticalHitChance: player.attributes.criticalHitChance + player.getExtraAttributes().criticalHitChance,
+                                criticalHitDamage: player.attributes.criticalHitDamage + player.getExtraAttributes().criticalHitDamage,
+                                defenseBreakLevel: player.attributes.defenseBreakLevel * (1 + player.getExtraAttributes().defenseBreakMultiply),
+                                precisionChance: player.attributes.precisionChance
+                            }
+                        }
+                        logger.logAddTargetDebuff(debuff, this);
                     }
-                    for (var key in this.buffs) {
-                        var buff = this.buffs[key];
-                        if (buff.effects.criticalHitChance != null) {
-                            ret.criticalHitChance += buff.effects.criticalHitChance * buff.level;
-                        }
-                        if (buff.effects.criticalHitDamage != null) {
-                            ret.criticalHitDamage += buff.effects.criticalHitDamage * buff.level;
-                        }
-                        if (buff.effects.defenseBreakMultiply != null) {
-                            ret.defenseBreakMultiply += buff.effects.defenseBreakMultiply * buff.level;
-                        }
-                        if (buff.effects.basicAttckPowerMultiply != null) {
-                            ret.basicAttckPowerMultiply += buff.effects.basicAttckPowerMultiply * buff.level;
-                        }
-                    }
-                    return ret;
-                },
-                isCasting: false,
-                castingCountDown: 0,
-                castingSkill: null
-            };
-            return avatar;
-        },
-        createTarget: function(target) {
-            var avatar = {
-                name: target.name,
-                attributes: {
-                    hp: 5000000,
-                    hitChance_require: target.attributes.hitChance_require,
-                    precisionChance_require: target.attributes.precisionChance_require,
-                    defenseRate: target.attributes.defenseRate
-                }
-            };
-            return avatar;
-        },
-        simulateAFrame: function(player, target, macro) {
-            // try macro
-            for (var key in macro) if (macro.hasOwnProperty(key)) {
-                var cast = macro[key];
-                if (macroService.calculateCondition(cast.condition, player, target)) {
-                    this.castSkill(player, target, cast.skill);
-                }
+                };
             }
-        },
-        castSkill: function(player, target, skillName) {
-            // Is player casting?
-            if (player.isCasting) return;
-
-            // Is skill's name right?
-            var skill = xinfa.getSkillByName(skillName);
-            if (skill == null) return;
-
-            // Is gcd & cd ok?
-            if (skill.gcdLevel != null && player.gcd[skill.gcdLevel] > 0) return;
-            if (skill.cdRest > 0) return;
-
-            // Cast skill
-            if (skill.type == skillService.SkillType.Casting) {
-                player.isCasting = true;
-                player.castingSkill = skill;
-                player.castingCountDown = skill.getCastingDuration();
-            }
-            else {
-                this.useSkill(player, target, skill);
-            }
-
-            // Trigger GCD
-            if (skill.gcdLevel != null) {
-                this.gcds[skill.gcdLevel] = 1.5;
-            }
-        },
-        useSkill: function(player, target, skill) {
-
-        }
-    };
-}]);
+        };
+    }
+]);

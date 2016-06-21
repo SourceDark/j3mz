@@ -1,6 +1,9 @@
 j3mzApp.factory('constService', function() {
     return {
         DEFENSE_BREAK_COEF : 36.34,
+        MAX_QIDIAN: 10,
+        MIN_NUMBER: -1,
+        MAX_NUMBER: 100000000,
         targets: [
             {
                 name: "初级试炼木桩",
@@ -35,23 +38,11 @@ j3mzApp.factory('constService', function() {
                 }
             }
         ],
-        SkillType: {
-            Normal: 0,
-            Auto: 1,
-            Casting: 2
-        },
-        SkillTargetType: {
-            Enemy: 0,
-            Self: 1
-        },
-        HitType: {
-            Miss: 0,
-            Hit: 1,
-            Critical: 2,
-            Block: 3
-        },
         randBetween: function(a, b) {
             return a + (b - a) * Math.random();
+        },
+        calcGCD: function(player) {
+            return 1.51;
         }
     };
 });

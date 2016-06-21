@@ -1,4 +1,4 @@
-j3mzApp.factory('buffService', function() {
+j3mzApp.factory('buffService', ['skillService', 'constService', function(skillService, constService) {
     var buffs = [
         {
             name: "碎星辰",
@@ -42,11 +42,64 @@ j3mzApp.factory('buffService', function() {
             tick_duration_max: 3,
             level: 0,
             level_max: 5,
-            skillCoef: 0.1163
+            skillCoef: 0.11675
         }
-    ]
+    ];
     return {
         buffs: buffs,
-        debuffs: buffs
+        getBuffByName: function(buffname) {
+            for (var key in this.buffs) {
+                var buff = this.buffs[key];
+                if (buff.name == buffname) {
+                    return buff;
+                }
+            }
+            return null;
+        },
+        debuffs: debuffs,
+        getDebuffByName: function(debuffName) {
+            for (var key in this.debuffs) {
+                var debuff = this.debuffs[key];
+                if (debuff.name == debuffName) {
+                    return debuff;
+                }
+            }
+            return null;
+        },
+        calculateDebuffHitType: function(debuff, player, target) {
+            // Calculate the table
+            var blockChance = Math.max(target.attributes.precisionChance_require - debuff.attributes.precisionChance, 0);
+            var criticalHitChance = Math.min(debuff.attributes.criticalHitChance, 1 - blockChance);
+            var hitChance = 1 - blockChance - criticalHitChance;
+            // Roll once
+            var roll = Math.random();
+            if (roll < blockChance) {
+                return skillService.HitType.Block;
+            }
+            if (roll < blockChance + criticalHitChance) {
+                return skillService.HitType.Critical;
+            }
+            return skillService.HitType.Hit;
+        },
+        calculateDebuffDamage: function(debuff, avatar, target, hitType) {
+            // Basic damage
+            var damage = debuff.skillCoef * debuff.attributes.finalAttackPower;
+            // Defense break
+            damage = damage * (1 + debuff.attributes.defenseBreakLevel / constService.DEFENSE_BREAK_COEF / 100);
+            // Critical damage
+            if (hitType == skillService.HitType.Critical) {
+                damage = damage * debuff.attributes.criticalHitDamage;
+            }
+            // Block damage
+            if (hitType == skillService.HitType.Block) {
+                damage = damage / 4;
+            }
+            // Global benefit
+            damage = damage * 1;
+            // Target's defense
+            damage = damage * (1 - target.attributes.defenseRate);
+            // Response
+            return damage;
+        }
     };
-});
+}]);
