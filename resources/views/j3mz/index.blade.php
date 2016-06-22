@@ -1,4 +1,4 @@
-@extends('j3mz.layouts.header')
+@extends('j3mz.layouts.navbar')
 
 @section('title', "首页")
 
@@ -20,7 +20,42 @@
     <script src="/js/j3mz/index.js"></script>
 @endsection
 
-@section('body')
+@section('main-content')
+    <div class="xinfa-panel">
+        <div class="xinfa-item">
+            <image src="/image/j3mz/xinfa/taixujianyi.png"></image>
+        </div>
+        <div class="xinfa-item">
+            <image src="/image/j3mz/xinfa/zixiagong.png"></image>
+        </div>
+        <div class="xinfa-item">
+            <image src="/image/j3mz/xinfa/aoxuezhanyi.png"></image>
+        </div>
+        <div class="xinfa-item">
+            <image src="/image/j3mz/xinfa/jingyujue.png"></image>
+        </div>
+        <div class="xinfa-item">
+            <image src="/image/j3mz/xinfa/bingxinjue.png"></image>
+        </div>
+        <div class="xinfa-item">
+            <image src="/image/j3mz/xinfa/huajianyou.png"></image>
+        </div>
+        <div class="xinfa-item">
+            <image src="/image/j3mz/xinfa/tianluoguidao.png"></image>
+        </div>
+        <div class="xinfa-item">
+            <image src="/image/j3mz/xinfa/yijinjing.png"></image>
+        </div>
+        <div class="xinfa-item">
+            <image src="/image/j3mz/xinfa/dujing.png"></image>
+        </div>
+        <div class="xinfa-item">
+            <image src="/image/j3mz/xinfa/fengyingshengjue.png"></image>
+        </div>
+    </div>
+@endsection
+
+@section('123')
     <div ng-controller="indexCtrl">
         <div>
             <div>更新时间2016年06月22日：17时24分：修复了一个修改武器伤害会造成输出爆炸的错误</div>

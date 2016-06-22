@@ -2,13 +2,12 @@
 <head>
     <title>@yield('title') | 剑三木桩</title>
     @section('header')
+        <link rel="stylesheet/less" type="text/css" href="/css/j3mz/j3mz.less">
     @show
 </head>
 <body ng-app="j3mzApp">
-    <div>
     @section('body')
     @show
-    </div>
     <div style="display: none">
         @section('footer')
             <script src="/js/lib/less/less.min.js" data-env="production"></script>

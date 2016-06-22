@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('j3mz.index');
 });
+
+Route::get('navbar', function() {
+    return view('j3mz.layouts.navbar');
+});
