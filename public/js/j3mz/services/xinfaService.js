@@ -12,11 +12,11 @@ j3mzApp.factory('xinfaService', ['skillService', function(skillService) {
                 skillService.getSkillByName("天地无极"),
                 skillService.getSkillByName("碎星辰")
             ]
-        },
+        }/*,
         {
             name: '紫霞功',
             useWeapon: false
-        }
+        }*/
     ];
     for (var key in xinfas) if (xinfas.hasOwnProperty(key)) {
         var xinfa = xinfas[key];

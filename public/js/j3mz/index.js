@@ -28,12 +28,13 @@ j3mzApp.controller('indexCtrl', ['$scope', 'worldService', 'xinfaService', 'avat
             "/cast 三环套月\n";
         $scope.frameLength = 0.01;
         $scope.worldLength = 600;
-        $scope.worldAmount = 10;
+        $scope.worldAmount = 2;
 
         $scope.test = function() {
             $scope.dpsSum = 0;
             $scope.results = [];
             for (var i = 0; i < $scope.worldAmount; i++) {
+                console.log("正在计算第" + i + "场");
                 var player = avatarService.createPlayer($scope.xinfa, $scope.attributes);
                 var target = avatarService.createTarget($scope.target);
                 var macro = macroService.createMacro($scope.macroText);

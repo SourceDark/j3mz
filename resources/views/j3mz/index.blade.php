@@ -56,7 +56,14 @@
             <div>模拟次数：<input ng-model="worldAmount">（总共模拟的战斗次数，越高平均输出越准确）</div>
         </div>
         <button ng-click="test()">测试</button>
-        <div>平均输出为：<%(dpsSum / worldAmount / worldLength).toFixed(0)%></div>
+        <div style="border: 1px solid">
+            <small>
+        <div>一些说明：</div>
+        <div>按照作者的电脑配置，一次精度0.01、时长600S的战斗大约1秒左右可以计算出来，这个时间会随着CPU性能等软硬件因素而变化，所以第一次使用的时候最好控制一下模拟时间和模拟次数。</div>
+        <div>如果想要看具体计算进程，可以按F12（或者根据浏览器不同的其他快捷键）打开控制台，有输出当前计算进度（我会尽快直接做在页面里）</div>
+            </small>
+        </div>
+        <div>模拟结果：平均输出为（<%(dpsSum / worldAmount / worldLength).toFixed(0)%>）</div>
         <div class="result-panel">
             <div class="battle-list">
                 <div class="item" ng-repeat="result in results" ng-click="selectResult(result)">第<%$index%>场：<%result.dps.toFixed(2)%></div>
