@@ -4,19 +4,19 @@ j3mzApp.factory('avatarService', ['macroService', 'skillService', 'constService'
             createPlayer: function(xinfa, attributes) {
                 return {
                     reset: function() {
-                        this.buffs = [];
+                        this.buffs = [];    
                         this.gcd = [0];
                         this.xinfa.reset();
                     },
                     xinfa: xinfa,
                     attributes: {
-                        weaponDamage_lowerLimit: attributes.weaponDamage_lowerLimit + attributes.weaponDamage_extra,
-                        weaponDamage_upperLimit: attributes.weaponDamage_upperLimit + attributes.weaponDamage_extra,
-                        basicAttackPower: attributes.basicAttackPower,
-                        finalAttackPower: attributes.finalAttackPower,
+                        weaponDamage_lowerLimit: parseInt(attributes.weaponDamage_lowerLimit) + parseInt(attributes.weaponDamage_extra),
+                        weaponDamage_upperLimit: parseInt(attributes.weaponDamage_upperLimit) + parseInt(attributes.weaponDamage_extra) ,
+                        basicAttackPower: parseInt(attributes.basicAttackPower),
+                        finalAttackPower: parseInt(attributes.finalAttackPower),
                         criticalHitChance: attributes.criticalHitChance / 100.0,
                         criticalHitDamage: attributes.criticalHitDamage / 100.0,
-                        defenseBreakLevel: attributes.defenseBreakLevel,
+                        defenseBreakLevel: parseInt(attributes.defenseBreakLevel),
                         hitChance: attributes.hitChance / 100.0,
                         precisionChance: attributes.precisionChance / 100.0,
                         qidian: 10

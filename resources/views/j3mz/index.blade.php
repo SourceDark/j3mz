@@ -23,6 +23,7 @@
 @section('body')
     <div ng-controller="indexCtrl">
         <div>
+            <div>更新时间2016年06月22日：17时24分：修复了一个修改武器伤害会造成输出爆炸的错误</div>
             <div>
                 <span>心法：</span>
                 <select ng-model="xinfa" ng-options="xinfa.name for xinfa in xinfas"></select>
