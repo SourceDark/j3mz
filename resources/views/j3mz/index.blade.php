@@ -51,13 +51,26 @@
         </div>
         <div class="main-panel">
             <div class="section">
-                <div class="title">奇穴设置</div>
-                <table cellspacing="8">
-                    <tr class="qixue-item" ng-repeat="qixue in selectedXinfa.qixues">
-                        <td class="name"><%qixue.options[qixue.active].name%></td>
-                        <td class="description"><%qixue.options[qixue.active].description%></td>
-                    </tr>
-                </table>
+                <div class="title" ng-class="{unfold: !qixue_section_fold}">
+                    <i ng-if="!qixue_section_fold" ng-click="alterQixueSection()" class="fa fa-minus" aria-hidden="true"></i>
+                    <i ng-if="qixue_section_fold" ng-click="alterQixueSection()" class="fa fa-plus" aria-hidden="true"></i>
+                    <span> 奇穴设置</span>
+                </div>
+                <div ng-if="!qixue_section_fold">
+                    <div ng-repeat="qixue in selectedXinfa.qixues">
+                        <div ng-click="alterQixue(qixue)" class="qixue" ng-class="{fade: (unfold_qixue != null && unfold_qixue != qixue)}">
+                            【<%qixue.options[qixue.active].name%>】<%qixue.options[qixue.active].description%>
+                        </div>
+                        <div ng-show="qixue == unfold_qixue" ng-repeat="option in qixue.options" class="option">
+                            <div ng-if="option.available" ng-click="selectQixueOptionIndex(qixue, $index)">
+                                <i ng-show="qixue.active == $index"class="fa fa-check" aria-hidden="true"></i>【<%option.name%>】<%option.description%>
+                            </div>
+                            <s ng-if="!option.available">
+                                【<%option.name%>】<%option.description%>
+                            </s>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

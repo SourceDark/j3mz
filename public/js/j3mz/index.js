@@ -18,6 +18,27 @@ j3mzApp.controller('indexCtrl', ['$scope', 'worldService', 'xinfaService', 'avat
             $scope.selectedMenuIndex = index;
         };
 
+        /**
+         * Qixue fold
+         */
+        $scope.qixue_section_fold = false;
+        $scope.alterQixueSection = function() {
+            $scope.qixue_section_fold = !$scope.qixue_section_fold;
+        };
+        $scope.unfold_qixue = null;
+        $scope.alterQixue = function(qixue) {
+            if ($scope.unfold_qixue == qixue) {
+                $scope.unfold_qixue = null;
+            }
+            else {
+                $scope.unfold_qixue = qixue;
+            }
+        };
+        $scope.selectQixueOptionIndex = function(qixue, index) {
+            qixue.active = index;
+            $scope.unfold_qixue = null;
+        };
+
 
         $scope.xinfa = $scope.xinfas[0];
         $scope.attributes = {
