@@ -12,6 +12,7 @@
       padding: 10px 0px;
       margin: 0px 0px;
       text-align: center;
+      transition: opacity .2s ease,background .2s ease,box-shadow .2s ease;
       img {
         width: 40px;
         height: 40px;
@@ -19,14 +20,104 @@
       }
       &:hover {
         background-color: rgba(255,255,255,.1);
-        background-image: linear-gradient(rgba(255,255,255,.03) 0,rgba(255,255,255,.1) 50%,rgba(255,255,255,.03) 100%);
-        transition: opacity .2s ease,background .2s ease,box-shadow .2s ease;
+      }
+      &.selected {
+        background-color: rgba(255,255,255,.2);
+        &:hover {
+          background-color: rgba(255,255,255,.1);
+        }
       }
     }
     .sep {
       height: 1px;
       margin: 0px 7px;
       background-color: rgba(240, 240, 240, 0.05);
+    }
+  }
+  .sidebar {
+    position: fixed;
+    left: 70px;
+    width: 180px;
+    top: 50px;
+    bottom: 0;
+    border-right: 1px solid #CCC;
+
+    .description {
+      margin: 25px 0px 0px 0px;
+      padding-bottom: 20px;
+      //padding: 10px 0 0 10px;
+      text-align: center;
+      border-bottom: 1px solid #CCC;
+      img {
+        width: 100px;
+        margin-bottom: 5px;
+      }
+      .line {
+        font-family: 华文楷体;
+        font-size: 17px;
+        color: #333333;
+      }
+    }
+    .menu-list {
+      margin: 40px 0 0 0;
+      //text-align: center;
+      .menu-item {
+        transition: opacity .2s ease, background .2s ease, font-size .2s ease, margin .2s ease;
+        cursor: pointer;
+        div {
+          display: inline-block;
+          width: 30px;
+          text-align: center;
+        }
+        margin-top: 20px;
+        margin-left: 30px;
+        font-size: 15px;
+        &:hover {
+          margin-left: 25px;
+        }
+        &.selected {
+          border-right: 5px solid #484848;
+          margin-left: 25px;
+        }
+      }
+    }
+  }
+  .main-panel {
+    overflow-y: auto;
+    position: fixed;
+    left: 250px;
+    right: 0px;
+    top: 50px;
+    bottom: 0;
+    padding: 20px;
+    .section {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background: white;
+      .title {
+        height: 25px;
+        line-height: 25px;
+        padding: 10px 20px;
+        border-bottom: 1px solid #ccc;
+        font-size: 16px;
+      }
+      .qixue-item {
+        //display: block;
+        margin: 10px;
+        .name {
+          padding-right: 8px;
+          min-width: 50px;
+          //display: inline;
+          cursor: pointer;
+          //display: inline-block;
+          //width: 20%;
+          border-right: 1px solid #ccc;
+        }
+        .description {
+          //width: 79% - 5px;
+          //padding-left: 5px;
+        }
+      }
     }
   }
 }

@@ -21,36 +21,44 @@
 @endsection
 
 @section('main-content')
-    <div class="xinfa-panel">
-        <div class="xinfa-item">
-            <image src="/image/j3mz/xinfa/taixujianyi.png"></image>
+    <div ng-controller="indexCtrl">
+        <div class="xinfa-panel">
+            <div ng-repeat="xinfa in xinfas" class="xinfa-item" ng-click="selectXinfa(xinfa)" ng-class="{selected: (xinfa == selectedXinfa)}">
+                <image ng-src="/image/j3mz/xinfa/<%xinfa.pinyin%>.png"></image>
+            </div>
         </div>
-        <div class="xinfa-item">
-            <image src="/image/j3mz/xinfa/zixiagong.png"></image>
+        <div class="sidebar">
+            <div class="description">
+                <image ng-src="/image/j3mz/description.png"></image>
+                <div class="line" ng-repeat="descriptionLine in selectedXinfa.description">
+                    <%descriptionLine%>
+                </div>
+            </div>
+            <div class="menu-list">
+                <div class="menu-item" ng-class="{selected: selectedMenuIndex == 0}" ng-click="selectMenuIndex(0)">
+                    <div><i class="fa fa-user-plus" aria-hidden="true"></i></div>
+                    <span> 角色属性</span>
+                </div>
+                <div class="menu-item" ng-class="{selected: selectedMenuIndex == 1}" ng-click="selectMenuIndex(1)">
+                    <div><i class="fa fa-clock-o" aria-hidden="true"></i></div>
+                    <span> 输出模拟</span>
+                </div>
+                <div class="menu-item" ng-class="{selected: selectedMenuIndex == 2}" ng-click="selectMenuIndex(2)">
+                    <div><i class="fa fa-star" aria-hidden="true"></i></div>
+                    <span> 属性收益</span>
+                </div>
+            </div>
         </div>
-        <div class="xinfa-item">
-            <image src="/image/j3mz/xinfa/aoxuezhanyi.png"></image>
-        </div>
-        <div class="xinfa-item">
-            <image src="/image/j3mz/xinfa/jingyujue.png"></image>
-        </div>
-        <div class="xinfa-item">
-            <image src="/image/j3mz/xinfa/bingxinjue.png"></image>
-        </div>
-        <div class="xinfa-item">
-            <image src="/image/j3mz/xinfa/huajianyou.png"></image>
-        </div>
-        <div class="xinfa-item">
-            <image src="/image/j3mz/xinfa/tianluoguidao.png"></image>
-        </div>
-        <div class="xinfa-item">
-            <image src="/image/j3mz/xinfa/yijinjing.png"></image>
-        </div>
-        <div class="xinfa-item">
-            <image src="/image/j3mz/xinfa/dujing.png"></image>
-        </div>
-        <div class="xinfa-item">
-            <image src="/image/j3mz/xinfa/fengyingshengjue.png"></image>
+        <div class="main-panel">
+            <div class="section">
+                <div class="title">奇穴设置</div>
+                <table cellspacing="8">
+                    <tr class="qixue-item" ng-repeat="qixue in selectedXinfa.qixues">
+                        <td class="name"><%qixue.options[qixue.active].name%></td>
+                        <td class="description"><%qixue.options[qixue.active].description%></td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 @endsection

@@ -1,9 +1,24 @@
 j3mzApp.controller('indexCtrl', ['$scope', 'worldService', 'xinfaService', 'avatarService', 'constService', 'macroService', 'loggerService', 'skillService',
     function($scope, worldService, xinfaService, avatarService, constService, macroService, loggerService, skillService) {
         /**
-         * Parameters needed to input
+         * Xinfa panel
          */
         $scope.xinfas = xinfaService.xinfas;
+        $scope.selectedXinfa = $scope.xinfas[0];
+        $scope.selectXinfa = function(xinfa) {
+            $scope.selectedXinfa = xinfa;
+            $scope.selectedMenuIndex = 0;
+        };
+
+        /**
+         * Sidebar menu
+         */
+        $scope.selectedMenuIndex = 0;
+        $scope.selectMenuIndex = function(index) {
+            $scope.selectedMenuIndex = index;
+        };
+
+
         $scope.xinfa = $scope.xinfas[0];
         $scope.attributes = {
             weaponDamage_lowerLimit: 201,
