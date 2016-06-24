@@ -17,20 +17,21 @@
     <script src="/js/j3mz/services/skillService.js"></script>
     <script src="/js/j3mz/services/buffService.js"></script>
     <script src="/js/j3mz/services/loggerService.js"></script>
+    <script src="/js/j3mz/services/qixueService.js"></script>
     <script src="/js/j3mz/index.js"></script>
 @endsection
 
 @section('main-content')
     <div ng-controller="indexCtrl">
         <div class="xinfa-panel">
-            <div ng-repeat="xinfa in xinfas" class="xinfa-item" ng-click="selectXinfa(xinfa)" ng-class="{selected: (xinfa == selectedXinfa)}">
+            <div ng-repeat="xinfa in xinfas" class="xinfa-item" ng-click="selectXinfa(xinfa)" ng-class="{selected: (xinfa == player.getXinfa())}">
                 <image ng-src="/image/j3mz/xinfa/<%xinfa.pinyin%>.png"></image>
             </div>
         </div>
         <div class="sidebar">
             <div class="description">
                 <image ng-src="/image/j3mz/description.png"></image>
-                <div class="line" ng-repeat="descriptionLine in selectedXinfa.description">
+                <div class="line" ng-repeat="descriptionLine in player.getXinfa().description">
                     <%descriptionLine%>
                 </div>
             </div>
@@ -51,13 +52,13 @@
         </div>
         <div class="main-panel">
             <div class="section">
-                <div class="title" ng-class="{unfold: !qixue_section_fold}">
-                    <i ng-if="!qixue_section_fold" ng-click="alterQixueSection()" class="fa fa-minus" aria-hidden="true"></i>
-                    <i ng-if="qixue_section_fold" ng-click="alterQixueSection()" class="fa fa-plus" aria-hidden="true"></i>
+                <div class="title" ng-class="{unfold: !qixue_section_fold}" ng-click="alterQixueSection()">
+                    <i ng-if="!qixue_section_fold" class="fa fa-minus" aria-hidden="true"></i>
+                    <i ng-if="qixue_section_fold" class="fa fa-plus" aria-hidden="true"></i>
                     <span> 奇穴设置</span>
                 </div>
                 <div ng-if="!qixue_section_fold">
-                    <div ng-repeat="qixue in selectedXinfa.qixues">
+                    <div ng-repeat="qixue in player.getQixues()">
                         <div ng-click="alterQixue(qixue)" class="qixue" ng-class="{fade: (unfold_qixue != null && unfold_qixue != qixue)}">
                             【<%qixue.options[qixue.active].name%>】<%qixue.options[qixue.active].description%>
                         </div>
@@ -70,6 +71,13 @@
                             </s>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="title" ng-class="{unflod: !miji_section_fold}" ng-click="alterMijiSection()">
+                    <i ng-if="!miji_section_fold" class="fa fa-minus" aria-hidden="true"></i>
+                    <i ng-if="miji_section_fold" class="fa fa-plus" aria-hidden="true"></i>
+                    <span> 秘籍设置</span>
                 </div>
             </div>
         </div>

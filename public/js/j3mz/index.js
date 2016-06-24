@@ -1,27 +1,33 @@
 j3mzApp.controller('indexCtrl', ['$scope', 'worldService', 'xinfaService', 'avatarService', 'constService', 'macroService', 'loggerService', 'skillService',
     function($scope, worldService, xinfaService, avatarService, constService, macroService, loggerService, skillService) {
         /**
-         * Xinfa panel
+         * Player
          */
-        $scope.xinfas = xinfaService.xinfas;
-        $scope.selectedXinfa = $scope.xinfas[0];
-        $scope.selectXinfa = function(xinfa) {
-            $scope.selectedXinfa = xinfa;
-            $scope.selectedMenuIndex = 0;
-        };
+        $scope.player = avatarService.createPlayer();
 
         /**
-         * Sidebar menu
+         * Xinfa
          */
-        $scope.selectedMenuIndex = 0;
+        $scope.xinfas = xinfaService.getXinfas();
+        $scope.selectXinfa = function(xinfa) {
+            $scope.player.setXinfa(xinfa);
+            $scope.selectedMenuIndex = 0;
+        };
+        $scope.selectXinfa($scope.xinfas[0]);
+
+        /**
+         * Sidebar
+         */
         $scope.selectMenuIndex = function(index) {
             $scope.selectedMenuIndex = index;
         };
 
+        console.log($scope.player.getSkills());
+
         /**
-         * Qixue fold
+         * Qixue Section
          */
-        $scope.qixue_section_fold = false;
+        $scope.qixue_section_fold = true;
         $scope.alterQixueSection = function() {
             $scope.qixue_section_fold = !$scope.qixue_section_fold;
         };
@@ -39,7 +45,12 @@ j3mzApp.controller('indexCtrl', ['$scope', 'worldService', 'xinfaService', 'avat
             $scope.unfold_qixue = null;
         };
 
+        /**
+         * Miji Section
+         */
+        $scope.miji_section_fold = false;
 
+        /*
         $scope.xinfa = $scope.xinfas[0];
         $scope.attributes = {
             weaponDamage_lowerLimit: 201,
@@ -64,7 +75,7 @@ j3mzApp.controller('indexCtrl', ['$scope', 'worldService', 'xinfaService', 'avat
             "/cast 三环套月\n";
         $scope.frameLength = 0.01;
         $scope.worldLength = 600;
-        $scope.worldAmount = 2;
+        $scope.worldAmount = 2;*/
 
         $scope.test = function() {
             $scope.dpsSum = 0;

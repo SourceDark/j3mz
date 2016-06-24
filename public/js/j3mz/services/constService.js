@@ -43,6 +43,26 @@ j3mzApp.factory('constService', function() {
         },
         calcGCD: function(player) {
             return 1.51;
+        },
+        // Types
+        SkillType: {
+            Normal: 0,
+            Auto: 1,
+            Casting: 2
+        },
+        SkillTargetType: {
+            Enemy: 0,
+            Self: 1
+        },
+        HitType: {
+            Miss: 0,
+            Hit: 1,
+            Critical: 2,
+            Block: 3
+        },
+        XinfaType: {
+            Taixujianyi: 0,
+            Aoxuezhanyi: 1
         }
     };
 });
