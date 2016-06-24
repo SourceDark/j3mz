@@ -58,15 +58,15 @@
                     <span> 奇穴设置</span>
                 </div>
                 <div ng-if="!qixue_section_fold">
-                    <div ng-repeat="qixue in player.getQixues()">
-                        <div ng-click="alterQixue(qixue)" class="qixue" ng-class="{fade: (unfold_qixue != null && unfold_qixue != qixue)}">
+                    <div ng-repeat="qixue in player.getQixues()" class="qixue">
+                        <div ng-click="alterQixue(qixue)" class="title" ng-class="{fade: (unfold_qixue != null && unfold_qixue != qixue)}">
                             【<%qixue.options[qixue.active].name%>】<%qixue.options[qixue.active].description%>
                         </div>
                         <div ng-show="qixue == unfold_qixue" ng-repeat="option in qixue.options" class="option">
-                            <div ng-if="option.available" ng-click="selectQixueOptionIndex(qixue, $index)">
+                            <div ng-if="option.available" ng-click="selectQixueOptionIndex(qixue, $index)" class="clickable">
                                 <i ng-show="qixue.active == $index"class="fa fa-check" aria-hidden="true"></i>【<%option.name%>】<%option.description%>
                             </div>
-                            <s ng-if="!option.available">
+                            <s ng-if="!option.available" class="clickable">
                                 【<%option.name%>】<%option.description%>
                             </s>
                         </div>
@@ -74,10 +74,22 @@
                 </div>
             </div>
             <div class="section">
-                <div class="title" ng-class="{unflod: !miji_section_fold}" ng-click="alterMijiSection()">
+                <div class="title" ng-class="{unfold: !miji_section_fold}" ng-click="alterMijiSection()">
                     <i ng-if="!miji_section_fold" class="fa fa-minus" aria-hidden="true"></i>
                     <i ng-if="miji_section_fold" class="fa fa-plus" aria-hidden="true"></i>
                     <span> 秘籍设置</span>
+                </div>
+                <div ng-if="!miji_section_fold">
+                    <div ng-repeat="skill in player.getSkills()" ng-if="skill.mijis != null" class="miji">
+                        <div ng-click="alterMiji(miji)" class="title" ng-class="{fade: (unfold_miji != null && unfold_miji != miji)}">
+                            【<%skill.name%>】(<%skill.mijis.active_count%>/4)
+                        </div>
+                        <div ng-repeat="option in skill.mijis.options" class="option">
+                            <span ng-click="alterMijiOption(skill, option)" class="clickable" ng-if="option.active"><i class="fa fa-check-square-o" aria-hidden="true"></i> <%option.name%>：<%option.description%></span>
+                            <span ng-click="alterMijiOption(skill, option)" class="clickable" ng-if="!option.active && skill.mijis.active_count < 4"><i class="fa fa-square-o" aria-hidden="true"></i> <%option.name%>：<%option.description%></span>
+                            <s ng-if="!option.active && skill.mijis.active_count == 4"><i class="fa fa-square-o" aria-hidden="true"></i> <%option.name%>：<%option.description%></s>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

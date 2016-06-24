@@ -95,7 +95,7 @@
       border-radius: 5px;
       background: white;
       margin-bottom: 20px;
-      .title {
+      > .title {
         cursor: pointer;
         height: 25px;
         line-height: 25px;
@@ -112,15 +112,39 @@
         }
       }
       .qixue {
-        cursor: pointer;
-        margin: 10px;
-        &.fade {
-          opacity: 0.4;
+        .title {
+          font-size: 15px;
+          cursor: pointer;
+          margin: 10px;
+          &.fade {
+            opacity: 0.4;
+          }
+        }
+        .option {
+          font-size: 14px;
+          margin: 10px 10px 10px 20px;
+          .clickable {
+            cursor: pointer;
+          }
         }
       }
-      .option {
-        cursor: pointer;
-        margin: 10px 10px 10px 20px;
+      .miji {
+        display: inline-block;
+        vertical-align: top;
+        .title {
+          font-size: 15px;
+          margin: 10px;
+        }
+        .option {
+          font-size: 14px;
+          margin: 10px 10px 10px 20px;
+          .clickable {
+            cursor: pointer;
+          }
+          s {
+            opacity: 0.4;
+          }
+        }
       }
     }
   }

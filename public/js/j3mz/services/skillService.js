@@ -61,6 +61,56 @@ j3mzApp.factory('skillService', ['constService', function(constService) {
                         targetType: constService.SkillTargetType.Enemy,
                         cdRest: 0,
                         gcdLevel: 0,
+                        mijis: {
+                            active_count: 4,
+                            options: [
+                                {
+                                    name: "穴位图残页",
+                                    description: "调息时间减少0.5秒。",
+                                    active: false
+                                },
+                                {
+                                    name: '秘诀残页',
+                                    description: "会心提高2%。",
+                                    active: true
+                                },
+                                {
+                                    name: '秘诀断篇',
+                                    description: "会心提高3%。",
+                                    active: true
+                                },
+                                {
+                                    name: '秘诀绝章',
+                                    description: "会心提高4%。",
+                                    active: true
+                                },
+                                {
+                                    name: '参悟残页',
+                                    description: "伤害提高3%。",
+                                    active: false
+                                },
+                                {
+                                    name: '参悟断篇',
+                                    description: "伤害提高4%。",
+                                    active: false
+                                },
+                                {
+                                    name: '参悟绝章',
+                                    description: "伤害提高5%。",
+                                    active: true
+                                },
+                                {
+                                    name: '详解残页',
+                                    description: "命中提高1%。",
+                                    active: false
+                                },
+                                {
+                                    name: '详解断篇',
+                                    description: "命中提高2%。",
+                                    active: false
+                                }
+                            ]
+                        },
                         getColdTime: function(player, target) {
                             return 2;
                         },
@@ -158,6 +208,56 @@ j3mzApp.factory('skillService', ['constService', function(constService) {
                         targetType: constService.SkillTargetType.Enemy,
                         cdRest: 0,
                         gcdLevel: 0,
+                        mijis: {
+                            active_count: 4,
+                            options: [
+                                {
+                                    name: '秘诀残页',
+                                    description: "会心提高2%。",
+                                    active: false
+                                },
+                                {
+                                    name: '秘诀断篇',
+                                    description: "会心提高3%。",
+                                    active: true
+                                },
+                                {
+                                    name: '秘诀绝章',
+                                    description: "会心提高4%。",
+                                    active: true
+                                },
+                                {
+                                    name: '参悟残页',
+                                    description: "伤害提高3%。",
+                                    active: false
+                                },
+                                {
+                                    name: '参悟断篇',
+                                    description: "伤害提高4%。",
+                                    active: true
+                                },
+                                {
+                                    name: '参悟绝章',
+                                    description: "伤害提高5%。",
+                                    active: true
+                                },
+                                {
+                                    name: '详解残页',
+                                    description: "命中提高1%。",
+                                    active: false
+                                },
+                                {
+                                    name: '详解断篇',
+                                    description: "命中提高2%。",
+                                    active: false
+                                },
+                                {
+                                    name: "人偶图残页",
+                                    description: "命中目标则续气半格。",
+                                    active: false
+                                }
+                            ]
+                        },
                         getColdTime: function(player, target) {
                             return 0;
                         },
@@ -233,6 +333,51 @@ j3mzApp.factory('skillService', ['constService', function(constService) {
                         targetType: constService.SkillTargetType.Enemy,
                         cdRest: 0,
                         gcdLevel: 0,
+                        mijis: {
+                            active_count: 4,
+                            options: [
+                                {
+                                    name: '穴位图残页',
+                                    description: "调息时间减少1秒。",
+                                    active: false
+                                },
+                                {
+                                    name: '注解残页',
+                                    description: "施展招式的消耗降低5%。",
+                                    active: false
+                                },
+                                {
+                                    name: '注解断篇',
+                                    description: "施展招式的消耗降低10%。",
+                                    active: false
+                                },
+                                {
+                                    name: '参悟残页',
+                                    description: "伤害提高3%。",
+                                    active: true
+                                },
+                                {
+                                    name: '参悟断篇',
+                                    description: "伤害提高4%。",
+                                    active: true
+                                },
+                                {
+                                    name: '参悟绝章',
+                                    description: "伤害提高5%。",
+                                    active: true
+                                },
+                                {
+                                    name: '详解残页',
+                                    description: "命中提高2%。",
+                                    active: false
+                                },
+                                {
+                                    name: "人偶图残页",
+                                    description: "命中目标则续气半格。",
+                                    active: true
+                                }
+                            ]
+                        },
                         getColdTime: function(player, target) {
                             return 15;
                         },
@@ -368,6 +513,51 @@ j3mzApp.factory('skillService', ['constService', function(constService) {
                         targetType: constService.SkillTargetType.Enemy,
                         cdRest: 0,
                         gcdLevel: 0,
+                        mijis: {
+                            active_count: 4,
+                            options: [
+                                {
+                                    name: '穴位图残页',
+                                    description: "调息时间减少2秒。",
+                                    active: true
+                                },
+                                {
+                                    name: '穴位图断篇',
+                                    description: "调息时间减少3秒。",
+                                    active: true
+                                },
+                                {
+                                    name: "人偶图残页",
+                                    description: "招式附加额外的持续伤害，持续12秒。",
+                                    active: false
+                                },
+                                {
+                                    name: '参悟残页',
+                                    description: "伤害提高40%。",
+                                    active: false
+                                },
+                                {
+                                    name: '参悟断篇',
+                                    description: "伤害提高60%。",
+                                    active: false
+                                },
+                                {
+                                    name: '真传残页',
+                                    description: "招式的有效距离增加1尺。",
+                                    active: true
+                                },
+                                {
+                                    name: '真传断篇',
+                                    description: "招式的有效距离增加1尺。",
+                                    active: true
+                                },
+                                {
+                                    name: '真传绝章',
+                                    description: "招式的有效距离增加1尺。",
+                                    active: false
+                                }
+                            ]
+                        },
                         getColdTime: function(player, target) {
                             // 秘籍
                             return 20 - 3 - 2;

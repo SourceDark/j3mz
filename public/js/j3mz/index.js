@@ -25,7 +25,7 @@ j3mzApp.controller('indexCtrl', ['$scope', 'worldService', 'xinfaService', 'avat
         console.log($scope.player.getSkills());
 
         /**
-         * Qixue Section
+         * Qixue
          */
         $scope.qixue_section_fold = true;
         $scope.alterQixueSection = function() {
@@ -49,7 +49,14 @@ j3mzApp.controller('indexCtrl', ['$scope', 'worldService', 'xinfaService', 'avat
          * Miji Section
          */
         $scope.miji_section_fold = false;
-
+        $scope.alterMijiSection = function() {
+            $scope.miji_section_fold = !$scope.miji_section_fold;
+        };
+        $scope.alterMijiOption = function(skill, miji) {
+            skill.mijis.active_count = skill.mijis.active_count - (miji.active ? 1 : 0);
+            miji.active = !miji.active;
+            skill.mijis.active_count = skill.mijis.active_count + (miji.active ? 1 : 0);
+        };
         /*
         $scope.xinfa = $scope.xinfas[0];
         $scope.attributes = {
