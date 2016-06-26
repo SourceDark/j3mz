@@ -1,5 +1,5 @@
-j3mzApp.controller('indexCtrl', ['$scope', 'worldService', 'xinfaService', 'avatarService', 'constService', 'macroService', 'loggerService', 'skillService',
-    function($scope, worldService, xinfaService, avatarService, constService, macroService, loggerService, skillService) {
+j3mzApp.controller('indexCtrl', ['$scope', 'worldService', 'xinfaService', 'avatarService', 'constService', 'macroService', 'loggerService', 'skillService', 'targetService',
+    function($scope, worldService, xinfaService, avatarService, constService, macroService, loggerService, skillService, targetService) {
         /**
          * Player
          */
@@ -11,7 +11,7 @@ j3mzApp.controller('indexCtrl', ['$scope', 'worldService', 'xinfaService', 'avat
         $scope.xinfas = xinfaService.getXinfas();
         $scope.selectXinfa = function(xinfa) {
             $scope.player.setXinfa(xinfa);
-            $scope.selectedMenuIndex = 0;
+            $scope.selectedMenuIndex = 1;
         };
         $scope.selectXinfa($scope.xinfas[0]);
 
@@ -21,8 +21,6 @@ j3mzApp.controller('indexCtrl', ['$scope', 'worldService', 'xinfaService', 'avat
         $scope.selectMenuIndex = function(index) {
             $scope.selectedMenuIndex = index;
         };
-
-        console.log($scope.player.getSkills());
 
         /**
          * Qixue
@@ -46,9 +44,9 @@ j3mzApp.controller('indexCtrl', ['$scope', 'worldService', 'xinfaService', 'avat
         };
 
         /**
-         * Miji Section
+         * Miji
          */
-        $scope.miji_section_fold = false;
+        $scope.miji_section_fold = true;
         $scope.alterMijiSection = function() {
             $scope.miji_section_fold = !$scope.miji_section_fold;
         };
@@ -57,6 +55,52 @@ j3mzApp.controller('indexCtrl', ['$scope', 'worldService', 'xinfaService', 'avat
             miji.active = !miji.active;
             skill.mijis.active_count = skill.mijis.active_count + (miji.active ? 1 : 0);
         };
+
+        /**
+         * Attr
+         */
+        $scope.attr_section_fold = false;
+        $scope.alterAttrSection = function() {
+            $scope.attr_section_fold = !$scope.attr_section_fold;
+        };
+
+        /**
+         * Target
+         */
+        $scope.target_section_fold = false;
+        $scope.alterTargetSection = function() {
+            $scope.target_section_fold = !$scope.target_section_fold;
+        };
+        $scope.targetTypes = targetService.getTargetTypes();
+        $scope.selectTargetType = function(targetType) {
+            $scope.selectedTargetType = targetType;
+        };
+        $scope.selectTargetType($scope.targetTypes[0]);
+        $scope.targetHpUpperLimit = 5000000;
+        $scope.targetHpStartRate = 100;
+        $scope.targetHpEndRate = 0;
+
+        /**
+         * World
+         */
+        $scope.world_section_fold = false;
+        $scope.alterWorldSection = function() {
+            $scope.world_section_fold = !$scope.world_section_fold;
+        };
+
+        /**
+         * Dps Simulation
+         */
+        $scope.sim = function() {
+            var player = $scope.player;
+            var target = avatarService.createTarget();
+            target.setAttributes({
+                
+            });
+            console.log($scope.player);
+            console.log($scope.selectedTargetType);
+        };
+
         /*
         $scope.xinfa = $scope.xinfas[0];
         $scope.attributes = {

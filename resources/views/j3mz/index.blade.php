@@ -18,6 +18,8 @@
     <script src="/js/j3mz/services/buffService.js"></script>
     <script src="/js/j3mz/services/loggerService.js"></script>
     <script src="/js/j3mz/services/qixueService.js"></script>
+    <script src="/js/j3mz/services/attributeService.js"></script>
+    <script src="/js/j3mz/services/targetService.js"></script>
     <script src="/js/j3mz/index.js"></script>
 @endsection
 
@@ -51,46 +53,131 @@
             </div>
         </div>
         <div class="main-panel">
-            <div class="section">
-                <div class="title" ng-class="{unfold: !qixue_section_fold}" ng-click="alterQixueSection()">
-                    <i ng-if="!qixue_section_fold" class="fa fa-minus" aria-hidden="true"></i>
-                    <i ng-if="qixue_section_fold" class="fa fa-plus" aria-hidden="true"></i>
-                    <span> 奇穴设置</span>
-                </div>
-                <div ng-if="!qixue_section_fold">
-                    <div ng-repeat="qixue in player.getQixues()" class="qixue">
-                        <div ng-click="alterQixue(qixue)" class="title" ng-class="{fade: (unfold_qixue != null && unfold_qixue != qixue)}">
-                            【<%qixue.options[qixue.active].name%>】<%qixue.options[qixue.active].description%>
-                        </div>
-                        <div ng-show="qixue == unfold_qixue" ng-repeat="option in qixue.options" class="option">
-                            <div ng-if="option.available" ng-click="selectQixueOptionIndex(qixue, $index)" class="clickable">
-                                <i ng-show="qixue.active == $index"class="fa fa-check" aria-hidden="true"></i>【<%option.name%>】<%option.description%>
+            <!-- 角色属性 -->
+            <div ng-if="selectedMenuIndex == 0">
+                <!-- 奇穴设置 -->
+                <div class="section">
+                    <div class="title" ng-class="{unfold: !qixue_section_fold}" ng-click="alterQixueSection()">
+                        <i ng-if="!qixue_section_fold" class="fa fa-minus" aria-hidden="true"></i>
+                        <i ng-if="qixue_section_fold" class="fa fa-plus" aria-hidden="true"></i>
+                        <span> 奇穴设置</span>
+                    </div>
+                    <div ng-if="!qixue_section_fold">
+                        <div ng-repeat="qixue in player.getQixues()" class="qixue">
+                            <div ng-click="alterQixue(qixue)" class="title" ng-class="{fade: (unfold_qixue != null && unfold_qixue != qixue)}">
+                                【<%qixue.options[qixue.active].name%>】<%qixue.options[qixue.active].description%>
                             </div>
-                            <s ng-if="!option.available" class="clickable">
-                                【<%option.name%>】<%option.description%>
-                            </s>
+                            <div ng-show="qixue == unfold_qixue" ng-repeat="option in qixue.options" class="option">
+                                <div ng-if="option.available" ng-click="selectQixueOptionIndex(qixue, $index)" class="clickable">
+                                    <i ng-show="qixue.active == $index" class="fa fa-check" aria-hidden="true"></i>【<%option.name%>】<%option.description%>
+                                </div>
+                                <s ng-if="!option.available" class="clickable">
+                                    【<%option.name%>】<%option.description%>
+                                </s>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 秘籍设置 -->
+                <div class="section">
+                    <div class="title" ng-class="{unfold: !miji_section_fold}" ng-click="alterMijiSection()">
+                        <i ng-if="!miji_section_fold" class="fa fa-minus" aria-hidden="true"></i>
+                        <i ng-if="miji_section_fold" class="fa fa-plus" aria-hidden="true"></i>
+                        <span> 秘籍设置</span>
+                    </div>
+                    <div ng-if="!miji_section_fold">
+                        <div ng-repeat="skill in player.getSkills()" ng-if="skill.mijis != null" class="miji">
+                            <div ng-click="alterMiji(miji)" class="title" ng-class="{fade: (unfold_miji != null && unfold_miji != miji)}">
+                                【<%skill.name%>】(<%skill.mijis.active_count%>/4)
+                            </div>
+                            <div ng-repeat="option in skill.mijis.options" class="option">
+                                <span ng-click="alterMijiOption(skill, option)" class="clickable" ng-if="option.active"><i class="fa fa-check-square-o" aria-hidden="true"></i> <%option.name%>：<%option.description%></span>
+                                <span ng-click="alterMijiOption(skill, option)" class="clickable" ng-if="!option.active && skill.mijis.active_count < 4"><i class="fa fa-square-o" aria-hidden="true"></i> <%option.name%>：<%option.description%></span>
+                                <s ng-if="!option.active && skill.mijis.active_count == 4"><i class="fa fa-square-o" aria-hidden="true"></i> <%option.name%>：<%option.description%></s>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 属性设置 -->
+                <div class="section">
+                    <div class="title" ng-class="{unfold: !attr_section_fold}" ng-click="alterAttrSection()">
+                        <i ng-if="!attr_section_fold" class="fa fa-minus" aria-hidden="true"></i>
+                        <i ng-if="attr_section_fold" class="fa fa-plus" aria-hidden="true"></i>
+                        <span> 属性设置</span>
+                    </div>
+                    <div ng-if="!attr_section_fold">
+                        <div ng-if="player.getAttributes().weaponDamage_lowerLimit != null" class="attribute">
+                            <div class="name">武器伤害下限</div><input ng-model="player.getAttributes().weaponDamage_lowerLimit"/>
+                        </div>
+                        <div ng-if="player.getAttributes().weaponDamage_upperLimit != null" class="attribute">
+                            <div class="name">武器伤害上限</div><input ng-model="player.getAttributes().weaponDamage_upperLimit"/>
+                        </div>
+                        <div ng-if="player.getAttributes().weaponDamage_upperLimit != null" class="attribute">
+                            <div class="name">五彩石武伤</div><input ng-model="player.getAttributes().weaponDamage_extra"/>
+                        </div>
+                        <div ng-if="player.getAttributes().weaponDamage_upperLimit != null" class="attribute">
+                            <div class="name">基础攻击</div><input ng-model="player.getAttributes().basicAttackPower"/>
+                        </div>
+                        <div ng-if="player.getAttributes().weaponDamage_upperLimit != null" class="attribute">
+                            <div class="name">最终攻击</div><input ng-model="player.getAttributes().finalAttackPower"/>
+                        </div>
+                        <div ng-if="player.getAttributes().weaponDamage_upperLimit != null" class="attribute">
+                            <div class="name">会心几率(%)</div><input ng-model="player.getAttributes().criticalHitChance"/>
+                        </div>
+                        <div ng-if="player.getAttributes().weaponDamage_upperLimit != null" class="attribute">
+                            <div class="name">会心效果(%)</div><input ng-model="player.getAttributes().criticalHitDamage"/>
+                        </div>
+                        <div ng-if="player.getAttributes().weaponDamage_upperLimit != null" class="attribute">
+                            <div class="name">破防等级</div><input ng-model="player.getAttributes().defenseBreakLevel"/>
+                        </div>
+                        <div ng-if="player.getAttributes().weaponDamage_upperLimit != null" class="attribute">
+                            <div class="name">命中几率(%)</div><input ng-model="player.getAttributes().hitChance"/>
+                        </div>
+                        <div ng-if="player.getAttributes().weaponDamage_upperLimit != null" class="attribute">
+                            <div class="name">无双几率(%)</div><input ng-model="player.getAttributes().precisionChance"/>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="section">
-                <div class="title" ng-class="{unfold: !miji_section_fold}" ng-click="alterMijiSection()">
-                    <i ng-if="!miji_section_fold" class="fa fa-minus" aria-hidden="true"></i>
-                    <i ng-if="miji_section_fold" class="fa fa-plus" aria-hidden="true"></i>
-                    <span> 秘籍设置</span>
-                </div>
-                <div ng-if="!miji_section_fold">
-                    <div ng-repeat="skill in player.getSkills()" ng-if="skill.mijis != null" class="miji">
-                        <div ng-click="alterMiji(miji)" class="title" ng-class="{fade: (unfold_miji != null && unfold_miji != miji)}">
-                            【<%skill.name%>】(<%skill.mijis.active_count%>/4)
+            <div ng-if="selectedMenuIndex == 1">
+                <!-- 目标设置 -->
+                <div class="section">
+                    <div class="title" ng-class="{unfold: !target_section_fold}" ng-click="alterTargetSection()">
+                        <i ng-if="!target_section_fold" class="fa fa-minus" aria-hidden="true"></i>
+                        <i ng-if="target_section_fold" class="fa fa-plus" aria-hidden="true"></i>
+                        <span> 目标设置</span>
+                    </div>
+                    <div ng-if="!target_section_fold">
+                        <div ng-repeat="targetType in targetTypes" class="targetType" ng-click="selectTargetType(targetType)">
+                            <i ng-show="selectedTargetType == targetType" class="fa fa-check" aria-hidden="true"></i>
+                            <span><%targetType.name%> - </span>
+                            <span>命中要求：<%(targetType.attributes.hitChance_require * 100).toFixed(2)%>%,</span>
+                            <span>无双要求：<%(targetType.attributes.precisionChance_require * 100).toFixed(2)%>%,</span>
+                            <span>防御比例：<%(targetType.attributes.defenseRate * 100).toFixed(2)%>%</span>
                         </div>
-                        <div ng-repeat="option in skill.mijis.options" class="option">
-                            <span ng-click="alterMijiOption(skill, option)" class="clickable" ng-if="option.active"><i class="fa fa-check-square-o" aria-hidden="true"></i> <%option.name%>：<%option.description%></span>
-                            <span ng-click="alterMijiOption(skill, option)" class="clickable" ng-if="!option.active && skill.mijis.active_count < 4"><i class="fa fa-square-o" aria-hidden="true"></i> <%option.name%>：<%option.description%></span>
-                            <s ng-if="!option.active && skill.mijis.active_count == 4"><i class="fa fa-square-o" aria-hidden="true"></i> <%option.name%>：<%option.description%></s>
+                        <div class="targetAttr">
+                            <div class="name">目标气血上限</div><input ng-model="targetHpUpperLimit"/>
+                        </div>
+                        <div class="targetAttr">
+                            <div class="name">起始气血比例(%)</div><input ng-model="targetHpStartRate"/>
+                        </div>
+                        <div class="targetAttr">
+                            <div class="name">终止气血比例(%)</div><input ng-model="targetHpEndRate"/>
                         </div>
                     </div>
                 </div>
+                <!-- 世界设置 -->
+                <div class="section">
+                    <div class="title" ng-class="{unfold: !world_section_fold}" ng-click="alterWorldSection()">
+                        <i ng-if="!world_section_fold" class="fa fa-minus" aria-hidden="true"></i>
+                        <i ng-if="world_section_fold" class="fa fa-plus" aria-hidden="true"></i>
+                        <span> 世界设置</span>
+                    </div>
+                    <div ng-if="!world_section_fold">
+                    </div>
+                </div>
+                <button class="section-button" ng-click="sim()">开始模拟</button>
+
             </div>
         </div>
     </div>

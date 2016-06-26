@@ -1,17 +1,19 @@
-j3mzApp.factory('avatarService', ['macroService', 'skillService', 'constService', 'buffService', 'loggerService', 'qixueService',
-    function(macroService, skillService, constService, buffService, logger, qixueService) {
+j3mzApp.factory('avatarService', ['macroService', 'skillService', 'constService', 'buffService', 'loggerService', 'qixueService', 'attributeService',
+    function(macroService, skillService, constService, buffService, logger, qixueService, attributeService) {
         return {
             createPlayer: function() {
                 var pri = {
                     xinfa: null,
                     qixues: [],
-                    skills: []
+                    skills: [],
+                    attributes: {}
                 };
                 return {
                     setXinfa: function(xinfa) {
                         pri.xinfa = xinfa;
                         pri.qixues = qixueService.getQixuesByXinfaType(xinfa.type);
                         pri.skills = skillService.getSkillsByXinfaType(xinfa.type);
+                        pri.attributes = attributeService.getAttributesByXinfaType(xinfa.type);
                     },
                     getXinfa: function() {
                         return pri.xinfa;
@@ -21,6 +23,20 @@ j3mzApp.factory('avatarService', ['macroService', 'skillService', 'constService'
                     },
                     getSkills: function() {
                         return pri.skills;
+                    },
+                    getAttributes: function() {
+                        return pri.attributes;
+                    }
+                }
+            },
+            createTarget: function() {
+                var pri = {
+                    type: null,
+                    attributes: {}
+                };
+                return {
+                    setAttributes: function(attributes) {
+                        pri.attributes = attributes;
                     }
                 }
             },
@@ -148,7 +164,7 @@ j3mzApp.factory('avatarService', ['macroService', 'skillService', 'constService'
                     }
                 };
             },
-            createTarget: function(target) {
+            createTarget1: function(target) {
                 return {
                     reset: function() {
                         this.debuffs = [];

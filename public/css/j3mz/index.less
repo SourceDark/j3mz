@@ -146,6 +146,72 @@
           }
         }
       }
+      .attribute {
+        margin: 10px;
+        display: inline-block;
+        .name {
+          display: inline-block;
+          min-width: 120px;
+          font-size: 15px;
+        }
+        input {
+          transition: all .5s ease;
+          height: 15px;
+          line-height: 15px;
+          display: inline-block;
+          border: none;
+          padding-left: 10px;
+          font-size: 13px;
+          text-align: center;
+          border-bottom: 1px solid #ccc;
+          color: #555;
+          &:focus {
+            outline: none;
+            border-bottom: 1px solid #333;
+            color: #333;
+          }
+        }
+      }
+      .targetType {
+        margin: 10px;
+        font-size: 15px;
+        cursor: pointer;
+      }
+      .targetAttr {
+        margin: 0 10px 10px 10px;
+        display: inline-block;
+        .name {
+          display: inline-block;
+          min-width: 120px;
+          font-size: 15px;
+        }
+        input {
+          transition: all .5s ease;
+          height: 15px;
+          line-height: 15px;
+          display: inline-block;
+          border: none;
+          padding-left: 10px;
+          font-size: 13px;
+          text-align: center;
+          border-bottom: 1px solid #ccc;
+          color: #555;
+          &:focus {
+            outline: none;
+            border-bottom: 1px solid #333;
+            color: #333;
+          }
+        }
+      }
+    }
+    .section-button {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background: white;
+      margin-bottom: 20px;
+      height: 40px;
+      width: 200px;
+      cursor: pointer;
     }
   }
 }

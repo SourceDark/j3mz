@@ -63,6 +63,12 @@ j3mzApp.factory('constService', function() {
         XinfaType: {
             Taixujianyi: 0,
             Aoxuezhanyi: 1
+        },
+        TargetType: {
+            MuzhuangLevel0: 0,
+            MuzhuangLevel1: 1,
+            MuzhuangLevel2: 2,
+            MuzhuangLevel3: 3
         }
     };
 });
