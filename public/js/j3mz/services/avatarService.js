@@ -1,7 +1,46 @@
-j3mzApp.factory('avatarService', ['macroService', 'skillService', 'constService', 'buffService', 'loggerService',
-    function(macroService, skillService, constService, buffService, logger) {
+j3mzApp.factory('avatarService', ['macroService', 'skillService', 'constService', 'buffService', 'loggerService', 'qixueService', 'attributeService',
+    function(macroService, skillService, constService, buffService, logger, qixueService, attributeService) {
         return {
-            createPlayer: function(xinfa, attributes) {
+            createPlayer: function() {
+                var pri = {
+                    xinfa: null,
+                    qixues: [],
+                    skills: [],
+                    attributes: {}
+                };
+                return {
+                    setXinfa: function(xinfa) {
+                        pri.xinfa = xinfa;
+                        pri.qixues = qixueService.getQixuesByXinfaType(xinfa.type);
+                        pri.skills = skillService.getSkillsByXinfaType(xinfa.type);
+                        pri.attributes = attributeService.getAttributesByXinfaType(xinfa.type);
+                    },
+                    getXinfa: function() {
+                        return pri.xinfa;
+                    },
+                    getQixues: function() {
+                        return pri.qixues;
+                    },
+                    getSkills: function() {
+                        return pri.skills;
+                    },
+                    getAttributes: function() {
+                        return pri.attributes;
+                    }
+                }
+            },
+            createTarget: function() {
+                var pri = {
+                    type: null,
+                    attributes: {}
+                };
+                return {
+                    setAttributes: function(attributes) {
+                        pri.attributes = attributes;
+                    }
+                }
+            },
+            createPlayer1: function(xinfa, attributes) {
                 return {
                     reset: function() {
                         this.buffs = [];    
@@ -125,7 +164,7 @@ j3mzApp.factory('avatarService', ['macroService', 'skillService', 'constService'
                     }
                 };
             },
-            createTarget: function(target) {
+            createTarget1: function(target) {
                 return {
                     reset: function() {
                         this.debuffs = [];

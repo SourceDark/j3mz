@@ -13,6 +13,7 @@
         @section('footer')
             <script src="/js/lib/less/less.min.js" data-env="production"></script>
             <script src="/js/lib/angular/angular.min.js"></script>
+            <script src="/js/lib/angular/angular-animate.js"></script>
             <script src="/js/j3mz/j3mz.js"></script>
         @show
     </div>

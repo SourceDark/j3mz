@@ -94,30 +94,124 @@
       border: 1px solid #ccc;
       border-radius: 5px;
       background: white;
-      .title {
+      margin-bottom: 20px;
+      > .title {
+        cursor: pointer;
         height: 25px;
         line-height: 25px;
-        padding: 10px 20px;
-        border-bottom: 1px solid #ccc;
+        padding: 10px 15px;
         font-size: 16px;
+        &.unfold {
+          border-bottom: 1px solid #ccc;
+        }
+        i {
+          font-size: 10px;
+        }
+        span {
+          padding: 0px 5px;
+        }
       }
-      .qixue-item {
-        //display: block;
-        margin: 10px;
-        .name {
-          padding-right: 8px;
-          min-width: 50px;
-          //display: inline;
+      .qixue {
+        .title {
+          font-size: 15px;
           cursor: pointer;
-          //display: inline-block;
-          //width: 20%;
-          border-right: 1px solid #ccc;
+          margin: 10px;
+          &.fade {
+            opacity: 0.4;
+          }
         }
-        .description {
-          //width: 79% - 5px;
-          //padding-left: 5px;
+        .option {
+          font-size: 14px;
+          margin: 10px 10px 10px 20px;
+          .clickable {
+            cursor: pointer;
+          }
         }
       }
+      .miji {
+        display: inline-block;
+        vertical-align: top;
+        .title {
+          font-size: 15px;
+          margin: 10px;
+        }
+        .option {
+          font-size: 14px;
+          margin: 10px 10px 10px 20px;
+          .clickable {
+            cursor: pointer;
+          }
+          s {
+            opacity: 0.4;
+          }
+        }
+      }
+      .attribute {
+        margin: 10px;
+        display: inline-block;
+        .name {
+          display: inline-block;
+          min-width: 120px;
+          font-size: 15px;
+        }
+        input {
+          transition: all .5s ease;
+          height: 15px;
+          line-height: 15px;
+          display: inline-block;
+          border: none;
+          padding-left: 10px;
+          font-size: 13px;
+          text-align: center;
+          border-bottom: 1px solid #ccc;
+          color: #555;
+          &:focus {
+            outline: none;
+            border-bottom: 1px solid #333;
+            color: #333;
+          }
+        }
+      }
+      .targetType {
+        margin: 10px;
+        font-size: 15px;
+        cursor: pointer;
+      }
+      .targetAttr {
+        margin: 0 10px 10px 10px;
+        display: inline-block;
+        .name {
+          display: inline-block;
+          min-width: 120px;
+          font-size: 15px;
+        }
+        input {
+          transition: all .5s ease;
+          height: 15px;
+          line-height: 15px;
+          display: inline-block;
+          border: none;
+          padding-left: 10px;
+          font-size: 13px;
+          text-align: center;
+          border-bottom: 1px solid #ccc;
+          color: #555;
+          &:focus {
+            outline: none;
+            border-bottom: 1px solid #333;
+            color: #333;
+          }
+        }
+      }
+    }
+    .section-button {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background: white;
+      margin-bottom: 20px;
+      height: 40px;
+      width: 200px;
+      cursor: pointer;
     }
   }
 }

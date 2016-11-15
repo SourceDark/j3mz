@@ -1,24 +1,107 @@
-j3mzApp.controller('indexCtrl', ['$scope', 'worldService', 'xinfaService', 'avatarService', 'constService', 'macroService', 'loggerService', 'skillService',
-    function($scope, worldService, xinfaService, avatarService, constService, macroService, loggerService, skillService) {
+j3mzApp.controller('indexCtrl', ['$scope', 'worldService', 'xinfaService', 'avatarService', 'constService', 'macroService', 'loggerService', 'skillService', 'targetService',
+    function($scope, worldService, xinfaService, avatarService, constService, macroService, loggerService, skillService, targetService) {
         /**
-         * Xinfa panel
+         * Player
          */
-        $scope.xinfas = xinfaService.xinfas;
-        $scope.selectedXinfa = $scope.xinfas[0];
-        $scope.selectXinfa = function(xinfa) {
-            $scope.selectedXinfa = xinfa;
-            $scope.selectedMenuIndex = 0;
-        };
+        $scope.player = avatarService.createPlayer();
 
         /**
-         * Sidebar menu
+         * Xinfa
          */
-        $scope.selectedMenuIndex = 0;
+        $scope.xinfas = xinfaService.getXinfas();
+        $scope.selectXinfa = function(xinfa) {
+            $scope.player.setXinfa(xinfa);
+            $scope.selectedMenuIndex = 1;
+        };
+        $scope.selectXinfa($scope.xinfas[0]);
+
+        /**
+         * Sidebar
+         */
         $scope.selectMenuIndex = function(index) {
             $scope.selectedMenuIndex = index;
         };
 
+        /**
+         * Qixue
+         */
+        $scope.qixue_section_fold = true;
+        $scope.alterQixueSection = function() {
+            $scope.qixue_section_fold = !$scope.qixue_section_fold;
+        };
+        $scope.unfold_qixue = null;
+        $scope.alterQixue = function(qixue) {
+            if ($scope.unfold_qixue == qixue) {
+                $scope.unfold_qixue = null;
+            }
+            else {
+                $scope.unfold_qixue = qixue;
+            }
+        };
+        $scope.selectQixueOptionIndex = function(qixue, index) {
+            qixue.active = index;
+            $scope.unfold_qixue = null;
+        };
 
+        /**
+         * Miji
+         */
+        $scope.miji_section_fold = true;
+        $scope.alterMijiSection = function() {
+            $scope.miji_section_fold = !$scope.miji_section_fold;
+        };
+        $scope.alterMijiOption = function(skill, miji) {
+            skill.mijis.active_count = skill.mijis.active_count - (miji.active ? 1 : 0);
+            miji.active = !miji.active;
+            skill.mijis.active_count = skill.mijis.active_count + (miji.active ? 1 : 0);
+        };
+
+        /**
+         * Attr
+         */
+        $scope.attr_section_fold = false;
+        $scope.alterAttrSection = function() {
+            $scope.attr_section_fold = !$scope.attr_section_fold;
+        };
+
+        /**
+         * Target
+         */
+        $scope.target_section_fold = false;
+        $scope.alterTargetSection = function() {
+            $scope.target_section_fold = !$scope.target_section_fold;
+        };
+        $scope.targetTypes = targetService.getTargetTypes();
+        $scope.selectTargetType = function(targetType) {
+            $scope.selectedTargetType = targetType;
+        };
+        $scope.selectTargetType($scope.targetTypes[0]);
+        $scope.targetHpUpperLimit = 5000000;
+        $scope.targetHpStartRate = 100;
+        $scope.targetHpEndRate = 0;
+
+        /**
+         * World
+         */
+        $scope.world_section_fold = false;
+        $scope.alterWorldSection = function() {
+            $scope.world_section_fold = !$scope.world_section_fold;
+        };
+
+        /**
+         * Dps Simulation
+         */
+        $scope.sim = function() {
+            var player = $scope.player;
+            var target = avatarService.createTarget();
+            target.setAttributes({
+                
+            });
+            console.log($scope.player);
+            console.log($scope.selectedTargetType);
+        };
+
+        /*
         $scope.xinfa = $scope.xinfas[0];
         $scope.attributes = {
             weaponDamage_lowerLimit: 201,
@@ -43,7 +126,7 @@ j3mzApp.controller('indexCtrl', ['$scope', 'worldService', 'xinfaService', 'avat
             "/cast 三环套月\n";
         $scope.frameLength = 0.01;
         $scope.worldLength = 600;
-        $scope.worldAmount = 2;
+        $scope.worldAmount = 2;*/
 
         $scope.test = function() {
             $scope.dpsSum = 0;
