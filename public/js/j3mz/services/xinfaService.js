@@ -89,7 +89,7 @@ j3mzApp.factory('xinfaService', ['skillService', function(skillService) {
                         },
                         {
                             name: "碎星辰",
-                            description: "产生一个10尺的气场，范围内所有团队成员外功会心几率提高5%，外功会心效果提高10%，持续24秒产生一个10尺的气场，范围内所有团队成员外功会心几率提高5%，外功会心效果提高10%，持续24秒",
+                            description: "产生一个10尺的气场，范围内所有团队成员外功会心几率提高5%，外功会心效果提高10%，持续24秒",
                             available: false,
                             active: false
                         }
